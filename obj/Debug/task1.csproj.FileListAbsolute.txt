@@ -1,0 +1,8 @@
+D:\Interlink\task1\bin\Debug\task1.exe.config
+D:\Interlink\task1\bin\Debug\task1.exe
+D:\Interlink\task1\bin\Debug\task1.pdb
+D:\Interlink\task1\obj\Debug\task1.csprojAssemblyReference.cache
+D:\Interlink\task1\obj\Debug\task1.csproj.CoreCompileInputs.cache
+D:\Interlink\task1\obj\Debug\task1.exe
+D:\Interlink\task1\obj\Debug\task1.pdb
+D:\Interlink\task1\obj\Debug\task1.csproj.ResolveComReference.cache
