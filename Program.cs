@@ -21,36 +21,14 @@ namespace task1
     }
     public class Employee
     {
-        private string name;
-        private string date;
-        private string hours;
+        public string Name { get; set; }
+        public string Date { get; set; }
+        public string Hours { get; set; }
         public Employee(string n, string d, string h)
         {
         Name = n;
         Date = d;
         Hours = h;
-        }
-        
-        public string Name { get; set; }
-        public string Date {
-            get
-            {
-                return date;
-            }
-            set
-            {
-                date = value;
-            }
-        }
-        public string Hours {
-            get 
-            {
-                return hours;
-            }
-            set
-            {
-                hours = value;
-            }
         }
     }
     public class Input
@@ -82,7 +60,6 @@ namespace task1
     }
     public class Output
     {
-        List<List<string>> list;
         List<List<string>> output;
         List<string> names;
         List<string> dates;
@@ -93,48 +70,29 @@ namespace task1
         }
         private void FormationTable(Input input)
         {
-            list = new List<List<string>>();
             names = new List<string>();
-            List<string> namesBuf = new List<string>();
             dates = new List<string>();
-            List<string> datesBuf = new List<string>();
-            List<string> oneDayHours = new List<string>();
             foreach (Employee e in input.list)
             {
                 names.Add(e.Name);
-                namesBuf.Add(e.Name);
                 dates.Add(e.Date);
-                datesBuf.Add(e.Date);
             }
-            names = namesBuf.Union(names).ToList();
+            names = names.Union(names).ToList();
             names.Sort();
-            dates = datesBuf.Union(dates).ToList();
-            int counter = 0;
-            foreach (string n in names)
-            {
-                list.Add(new List<string>());
-                list[counter].Add(n);
-                counter++;
-            }
+            dates = dates.Union(dates).ToList();
             List<Employee> sortedInput = input.list.OrderBy(x => x.Date).ThenBy(x => x.Name).ToList();
             output = new List<List<string>>();
             output.Add(new List<string>());
             output[0].Add("Name / Date");
-            for (int i = 0; i < dates.Count; i++)
-            {
-                output[0].Add(dates[i]);
-            }
-            for (int i = 0; i < names.Count; i++)
+
+            for (int j = 0; j < names.Count; j++)
             {
                 output.Add(new List<string>());
-                output[i + 1].Add(names[i]);
-                for (int j = 0; j < dates.Count; j++)
-                {
-                    output[i + 1].Add("0");
-                }
+                output[j + 1].Add(names[j]);
             }
-            for (int i = 1; i < output[0].Count; i++)
+            for (int i = 1; i < dates.Count + 1; i++)
             {
+                output[0].Add(dates[i - 1]);
                 string currentDate = output[0][i];
                 for (int j = 1; j < output.Count; j++)
                 {
@@ -142,23 +100,27 @@ namespace task1
                     var buf = sortedInput.Find(x => x.Name.Contains(currentName) && x.Date.Contains(currentDate));
                     if (buf != null)
                     {
-                        output[j][i] = buf.Hours;
+                        output[j].Add(buf.Hours);
+                    }
+                    else
+                    {
+                        output[j].Add("0");
                     }
                 }
-            }
-            for (int i = 1; i < output[0].Count; i++)
-            {
-                output[0][i] = Convert.ToDateTime(dates[i - 1]).ToString("yyyy-MM-dd");
             }
         }
         private void WriteFile(string path)
         {
             using (StreamWriter outputFile = new StreamWriter(path))
             {
-                for (int i = 0; i < names.Count + 1; i++)
+                for (int i = 0; i < output.Count; i++)
                 {
-                    for (int j = 0; j <= dates.Count; j++)
+                    for (int j = 0; j < output[0].Count; j++)
                     {
+                        if(j != 0 && i == 0)
+                        {
+                            output[i][j] = Convert.ToDateTime(dates[j - 1]).ToString("yyyy-MM-dd");
+                        }
                         outputFile.Write(output[i][j]);
                         if(j != dates.Count)
                         {
